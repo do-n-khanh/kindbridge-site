@@ -1,0 +1,981 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+import fs from 'fs';
+import path from 'path';
+
+// 自動的に各物件フォルダから写真を読み込む関数
+function getPropertyImages(propertyId: number): string[] {
+	const folderPath = path.join(process.cwd(), 'public', 'properties', `property-${propertyId}`);
+	
+	// フォルダが存在しない場合は空配列を返す
+	if (!fs.existsSync(folderPath)) {
+		return [];
+	}
+	
+	// フォルダ内の画像ファイルを取得
+	const files = fs.readdirSync(folderPath)
+		.filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file))
+		.sort((a, b) => {
+			// photo-1.jpg, photo-2.jpg のような順序でソート
+			const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+			const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+			return numA - numB;
+		})
+		.map(file => `/properties/property-${propertyId}/${file}`);
+	
+	return files;
+}
+
+// 物件データ（後で実際のデータに置き換えてください）
+const properties = [
+	{
+		id: 1,
+		status: 'available', // 'available' or 'occupied'
+		address: '東京都世田谷区桜上水３丁目',
+		layout: '3LDK',
+		buildingArea: '79.25㎡',
+		landArea: '－',
+		rent: '25.9万円',
+		managementFee: '0',
+		yearBuilt: '築27年',
+		features: [
+			'東急世田谷線/松原駅 徒歩8分、下高井戸駅 徒歩13分',
+			'一戸建て1-2階、角住戸・東南角住戸',
+			'バストイレ別、追焚機能',
+			'システムキッチン、対面式キッチン、3口以上コンロ',
+			'ペット相談、閑静な住宅地、駐輪場・バイク置場',
+		],
+		images: getPropertyImages(1),
+	},
+	{
+		id: 2,
+		status: 'occupied',
+		address: '東京都江戸川区江戸川２丁目',
+		layout: '3DK＋駐車場',
+		buildingArea: '57.83㎡',
+		landArea: '59.0㎡',
+		rent: '13.5万円',
+		managementFee: '0',
+		yearBuilt: '1974年12月（築52年）',
+		features: [
+			'都営新宿線 瑞江駅 徒歩14分',
+			'角部屋・木造2階建',
+			'事務所可（SOHO向け）、ペット相談、ルームシェア可',
+			'システムキッチン、バス・トイレ別、追焚機能',
+			'エアコン、全居室収納、駐車場・バイク置場あり',
+		],
+		images: getPropertyImages(2),
+	},
+	{
+		id: 3,
+		status: 'occupied',
+		address: '東京都江戸川区二之江２丁目',
+		layout: '3DK',
+		buildingArea: '52.87㎡',
+		landArea: '49.58㎡（14.99坪）',
+		rent: '12万円',
+		managementFee: '0',
+		yearBuilt: '1984年3月（築42年）',
+		features: [
+			'都営新宿線/二之江駅 徒歩14分、瑞江駅 徒歩22分',
+			'木造2階建、角地',
+			'3口コンロ、システムキッチン、床下収納',
+			
+		],
+		images: getPropertyImages(3),
+	},
+	{
+		id: 4,
+		status: 'available',
+		address: '千葉県市川市矢真間２丁目',
+		layout: '3DK',
+		buildingArea: '56.17㎡',
+		landArea: '38.89㎡（11.76坪）',
+		rent: '12万円',
+		managementFee: '－',
+		yearBuilt: '1975年5月（築50年）',
+		features: [
+			'東京メトロ東西線/南行徳駅 徒歩9分、行徳駅 徒歩15分',
+			'木造2階建、住宅地',
+			'空室・入居随時可、相談可能',
+			'洗水洗浄便座、浴室暖房、バルコニー、庭上',
+			'陽当り良好、南向き、第二種中高層居住専用地域',
+		],
+		images: getPropertyImages(4),
+	},
+];
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`賃貸物件一覧 - ${SITE_TITLE}`} description="カインドブリッジ合同会社が所有する賃貸一戸建て物件のご案内" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="properties-hero">
+				<h1>賃貸物件一覧</h1>
+				<p>自社所有の一戸建て物件をご紹介いたします。安心・安全な住まいをご提供します。</p>
+			</section>
+
+			<section class="properties-list">
+				<div class="properties-count">
+					<p>全{properties.length}件の物件（募集中: {properties.filter(p => p.status === 'available').length}件）</p>
+				</div>
+
+				{properties.map((property) => (
+					<div class="property-item" id={`property-${property.id}`}>
+						<div class="property-header">
+							<h2>物件 {property.id}</h2>
+							{property.status === 'available' ? (
+								<span class="status-badge available">募集中</span>
+							) : (
+								<span class="status-badge occupied">入居者募集終了</span>
+							)}
+						</div>
+
+						<div class="property-content">
+							<div class="property-gallery" data-property-id={property.id}>
+								<div class="main-image-container">
+									<img 
+										src={property.images[0]} 
+										alt={`${property.address} メイン画像`} 
+										class="main-image" 
+										data-index="0"
+										loading="eager"
+										decoding="async"
+									/>
+									<button class="gallery-btn expand-btn" aria-label="拡大表示">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+										</svg>
+									</button>
+									<div class="photo-counter">1 / {property.images.length}</div>
+								</div>
+								<div class="thumbnail-slider">
+									<button class="slider-nav prev" aria-label="前の画像">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<polyline points="15 18 9 12 15 6"></polyline>
+										</svg>
+									</button>
+									<div class="thumbnail-track">
+										{property.images.map((img, idx) => (
+											<img 
+												src={img} 
+												alt={`${property.address} 写真${idx + 1}`} 
+												class={`thumbnail ${idx === 0 ? 'active' : ''}`}
+												data-index={idx}
+											/>
+										))}
+									</div>
+									<button class="slider-nav next" aria-label="次の画像">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<polyline points="9 18 15 12 9 6"></polyline>
+										</svg>
+									</button>
+								</div>
+							</div>
+
+							<div class="property-details">
+								<div class="detail-section">
+									<h3>物件情報</h3>
+									<table class="info-table">
+										<tr>
+											<th>所在地</th>
+											<td>{property.address}</td>
+										</tr>
+										<tr>
+											<th>間取り</th>
+											<td>{property.layout}</td>
+										</tr>
+										<tr>
+											<th>建物面積</th>
+											<td>{property.buildingArea}</td>
+										</tr>
+										<tr>
+											<th>敷地面積</th>
+											<td>{property.landArea}</td>
+										</tr>
+										<tr>
+											<th>賃料</th>
+											<td class="rent-highlight">{property.rent}/月</td>
+										</tr>
+										<tr>
+											<th>管理費</th>
+											<td>{property.managementFee}/月</td>
+										</tr>
+										<tr>
+											<th>築年</th>
+											<td>{property.yearBuilt}</td>
+										</tr>
+									</table>
+								</div>
+
+								<div class="detail-section">
+									<h3>物件の特徴</h3>
+									<ul class="features-list">
+										{property.features.map((feature) => (
+											<li>{feature}</li>
+										))}
+									</ul>
+								</div>
+
+								{property.status === 'available' && (
+									<div class="inquiry-section">
+										<p class="inquiry-text">この物件についてのお問い合わせ</p>
+										<a href={`/contact?property=${property.id}`} class="inquiry-button">
+											お問い合わせ
+										</a>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				))}
+			</section>
+
+			<section class="properties-notice">
+				<h2>ご注意事項</h2>
+				<ul>
+					<li>掲載されている情報は変更される場合がございます。</li>
+					<li>詳細な条件や内見のご希望は、お問い合わせフォームよりご連絡ください。</li>
+					<li>写真は撮影時のものです。現況と異なる場合がございます。</li>
+					<li>契約には審査がございます。詳しくはお問い合わせください。</li>
+				</ul>
+			</section>
+
+			<section class="cta-section">
+				<h2>物件に関するお問い合わせ</h2>
+				<p>賃貸物件についてのご質問、内見のご希望は、お気軽にお問い合わせください。</p>
+				<a href="/contact" class="cta-button">お問い合わせ</a>
+			</section>
+		</main>
+		<Footer />
+
+		<!-- Lightbox Modal -->
+		<div id="lightbox" class="lightbox">
+			<button class="lightbox-close" aria-label="閉じる">
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+			<button class="lightbox-nav prev" aria-label="前の画像">
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<polyline points="15 18 9 12 15 6"></polyline>
+				</svg>
+			</button>
+			<button class="lightbox-nav next" aria-label="次の画像">
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<polyline points="9 18 15 12 9 6"></polyline>
+				</svg>
+			</button>
+			<img src="" alt="" class="lightbox-image" />
+			<div class="lightbox-counter"></div>
+		</div>
+	</body>
+</html>
+
+<script is:inline>
+	// Gallery functionality
+	document.addEventListener('DOMContentLoaded', function() {
+		const galleries = document.querySelectorAll('.property-gallery');
+		
+		galleries.forEach(function(gallery) {
+			const mainImage = gallery.querySelector('.main-image');
+			const thumbnails = gallery.querySelectorAll('.thumbnail');
+			const prevBtn = gallery.querySelector('.slider-nav.prev');
+			const nextBtn = gallery.querySelector('.slider-nav.next');
+			const expandBtn = gallery.querySelector('.expand-btn');
+			const counter = gallery.querySelector('.photo-counter');
+			const track = gallery.querySelector('.thumbnail-track');
+			
+			let currentIndex = 0;
+			const images = Array.from(thumbnails).map(function(thumb) { return thumb.src; });
+			
+			const updateGallery = function(index) {
+				currentIndex = index;
+				mainImage.src = images[index];
+				mainImage.setAttribute('data-index', index.toString());
+				counter.textContent = (index + 1) + ' / ' + images.length;
+				
+				thumbnails.forEach(function(thumb, idx) {
+					thumb.classList.toggle('active', idx === index);
+				});
+				
+				// Scroll thumbnail into view
+				const activeThumb = thumbnails[index];
+				const scrollLeft = activeThumb.offsetLeft - track.offsetWidth / 2 + activeThumb.offsetWidth / 2;
+				track.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+			};
+			
+			thumbnails.forEach(function(thumb, idx) {
+				thumb.addEventListener('click', function() { updateGallery(idx); });
+			});
+			
+			if (prevBtn) {
+				prevBtn.addEventListener('click', function() {
+					const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+					updateGallery(newIndex);
+				});
+			}
+			
+			if (nextBtn) {
+				nextBtn.addEventListener('click', function() {
+					const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+					updateGallery(newIndex);
+				});
+			}
+			
+			if (expandBtn) {
+				expandBtn.addEventListener('click', function() {
+					openLightbox(images, currentIndex);
+				});
+			}
+			
+			// Touch swipe support for thumbnails
+			let touchStartX = 0;
+			track.addEventListener('touchstart', function(e) {
+				touchStartX = e.touches[0].clientX;
+			});
+			
+			track.addEventListener('touchmove', function(e) {
+				if (!touchStartX) return;
+				const touchEndX = e.touches[0].clientX;
+				const diff = touchStartX - touchEndX;
+				track.scrollLeft += diff;
+				touchStartX = touchEndX;
+			});
+		});
+		
+		// Lightbox functionality
+		const lightbox = document.getElementById('lightbox');
+		const lightboxImage = lightbox.querySelector('.lightbox-image');
+		const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+		const lightboxClose = lightbox.querySelector('.lightbox-close');
+		const lightboxPrev = lightbox.querySelector('.lightbox-nav.prev');
+		const lightboxNext = lightbox.querySelector('.lightbox-nav.next');
+		
+		let lightboxImages = [];
+		let lightboxIndex = 0;
+		
+		window.openLightbox = function(images, startIndex) {
+			lightboxImages = images;
+			lightboxIndex = startIndex;
+			updateLightbox();
+			lightbox.classList.add('active');
+			document.body.style.overflow = 'hidden';
+		};
+		
+		const closeLightbox = function() {
+			lightbox.classList.remove('active');
+			document.body.style.overflow = '';
+		};
+		
+		const updateLightbox = function() {
+			if (!lightboxImage) return;
+			lightboxImage.src = lightboxImages[lightboxIndex];
+			lightboxCounter.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+		};
+		
+		const nextImage = function() {
+			lightboxIndex = lightboxIndex < lightboxImages.length - 1 ? lightboxIndex + 1 : 0;
+			updateLightbox();
+		};
+		
+		const prevImage = function() {
+			lightboxIndex = lightboxIndex > 0 ? lightboxIndex - 1 : lightboxImages.length - 1;
+			updateLightbox();
+		};
+		
+		if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+		if (lightboxNext) lightboxNext.addEventListener('click', nextImage);
+		if (lightboxPrev) lightboxPrev.addEventListener('click', prevImage);
+		
+		if (lightbox) {
+			lightbox.addEventListener('click', function(e) {
+				if (e.target === lightbox) closeLightbox();
+			});
+		}
+		
+		// Keyboard navigation
+		document.addEventListener('keydown', function(e) {
+			if (!lightbox.classList.contains('active')) return;
+			
+			if (e.key === 'Escape') closeLightbox();
+			if (e.key === 'ArrowLeft') prevImage();
+			if (e.key === 'ArrowRight') nextImage();
+		});
+		
+		// Touch swipe for lightbox
+		let lightboxTouchStartX = 0;
+		if (lightboxImage) {
+			lightboxImage.addEventListener('touchstart', function(e) {
+				lightboxTouchStartX = e.touches[0].clientX;
+			});
+			
+			lightboxImage.addEventListener('touchend', function(e) {
+				const lightboxTouchEndX = e.changedTouches[0].clientX;
+				const diff = lightboxTouchStartX - lightboxTouchEndX;
+				
+				if (Math.abs(diff) > 50) {
+					if (diff > 0) nextImage();
+					else prevImage();
+				}
+			});
+		}
+	});
+</script>
+
+<style>
+	.properties-hero {
+		text-align: center;
+		padding: 3em 2em;
+		background: linear-gradient(to bottom, #f8fafc, white);
+	}
+
+	.properties-hero h1 {
+		margin-bottom: 0.5em;
+	}
+
+	.properties-list {
+		max-width: 1200px;
+		margin: 2em auto;
+		padding: 0 2em;
+	}
+
+	.properties-count {
+		text-align: center;
+		margin-bottom: 2em;
+		font-size: 1.1em;
+		color: #64748b;
+	}
+
+	.property-item {
+		background: white;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+		margin-bottom: 3em;
+		overflow: hidden;
+	}
+
+	.property-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.5em 2em;
+		background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+		border-bottom: 2px solid #bfdbfe;
+	}
+
+	.property-header h2 {
+		margin: 0;
+		color: var(--accent-dark);
+	}
+
+	.status-badge {
+		padding: 0.5em 1.5em;
+		border-radius: 20px;
+		font-weight: bold;
+		font-size: 0.9em;
+	}
+
+	.status-badge.available {
+		background: #10b981;
+		color: white;
+	}
+
+	.status-badge.occupied {
+		background: #94a3b8;
+		color: white;
+	}
+
+	.property-content {
+		display: grid;
+		grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+		gap: 2em;
+		padding: 2em;
+	}
+	
+	@media (max-width: 1024px) {
+		.property-content {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.property-gallery {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+
+	@media (max-width: 768px) {
+		.property-gallery {
+			max-width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	.main-image-container {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 4/3;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+		background: #000;
+	}
+
+	@media (max-width: 768px) {
+		.main-image-container {
+			aspect-ratio: 16/9;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	.main-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		cursor: pointer;
+		image-rendering: high-quality;
+		image-rendering: -webkit-optimize-contrast;
+	}
+
+	@media (max-width: 768px) {
+		.main-image {
+			object-fit: contain;
+			background: #000;
+		}
+	}
+
+	.expand-btn {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+		background: rgba(0, 0, 0, 0.6);
+		color: white;
+		border: none;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: background 0.3s;
+		z-index: 2;
+	}
+
+	.expand-btn:hover {
+		background: rgba(0, 0, 0, 0.8);
+	}
+
+	.photo-counter {
+		position: absolute;
+		bottom: 1em;
+		right: 1em;
+		background: rgba(0, 0, 0, 0.7);
+		color: white;
+		padding: 0.4em 0.8em;
+		border-radius: 4px;
+		font-size: 0.9em;
+		font-weight: 500;
+	}
+
+	.thumbnail-slider {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+
+	.thumbnail-track {
+		display: flex;
+		gap: 0.5em;
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		scrollbar-width: thin;
+		scrollbar-color: var(--accent) #f1f5f9;
+		padding: 0.5em 0;
+	}
+
+	.thumbnail-track::-webkit-scrollbar {
+		height: 6px;
+	}
+
+	.thumbnail-track::-webkit-scrollbar-track {
+		background: #f1f5f9;
+		border-radius: 3px;
+	}
+
+	.thumbnail-track::-webkit-scrollbar-thumb {
+		background: var(--accent);
+		border-radius: 3px;
+	}
+
+	.thumbnail {
+		flex: 0 0 80px;
+		height: 60px;
+		object-fit: cover;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: all 0.3s;
+		border: 3px solid transparent;
+		opacity: 0.6;
+	}
+
+	.thumbnail:hover {
+		opacity: 1;
+		transform: translateY(-2px);
+	}
+
+	.thumbnail.active {
+		border-color: var(--accent);
+		opacity: 1;
+		box-shadow: 0 4px 8px rgba(74, 158, 255, 0.3);
+	}
+
+	.slider-nav {
+		flex: 0 0 auto;
+		background: white;
+		border: 2px solid var(--accent);
+		color: var(--accent);
+		border-radius: 50%;
+		width: 36px;
+		height: 36px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s;
+	}
+
+	.slider-nav:hover {
+		background: var(--accent);
+		color: white;
+		transform: scale(1.1);
+	}
+
+	/* Lightbox */
+	.lightbox {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.95);
+		z-index: 10000;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox.active {
+		display: flex;
+	}
+
+	.lightbox-image {
+		max-width: 90%;
+		max-height: 90vh;
+		object-fit: contain;
+		user-select: none;
+	}
+
+	.lightbox-close {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		background: rgba(255, 255, 255, 0.1);
+		color: white;
+		border: 2px solid white;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s;
+		z-index: 10001;
+	}
+
+	.lightbox-close:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: rotate(90deg);
+	}
+
+	.lightbox-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: rgba(255, 255, 255, 0.1);
+		color: white;
+		border: 2px solid white;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s;
+		z-index: 10001;
+	}
+
+	.lightbox-nav:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-50%) scale(1.1);
+	}
+
+	.lightbox-nav.prev {
+		left: 20px;
+	}
+
+	.lightbox-nav.next {
+		right: 20px;
+	}
+
+	.lightbox-counter {
+		position: absolute;
+		bottom: 30px;
+		left: 50%;
+		transform: translateX(-50%);
+		background: rgba(0, 0, 0, 0.7);
+		color: white;
+		padding: 0.5em 1.5em;
+		border-radius: 20px;
+		font-size: 1.1em;
+		font-weight: 500;
+	}
+
+	.property-details {
+		display: flex;
+		flex-direction: column;
+		gap: 2em;
+	}
+
+	@media (max-width: 768px) {
+		.property-details {
+			gap: 1.5em;
+		}
+
+		.detail-section h3 {
+			font-size: 1.1em;
+			margin-bottom: 0.75em;
+		}
+	}
+
+	.detail-section h3 {
+		color: var(--accent-dark);
+		margin-bottom: 1em;
+		padding-bottom: 0.5em;
+		border-bottom: 2px solid #e0f2fe;
+	}
+
+	.info-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	.info-table tr {
+		border-bottom: 1px solid #e2e8f0;
+	}
+
+	.info-table th,
+	.info-table td {
+		padding: 0.75em 0.5em;
+		text-align: left;
+	}
+
+	.info-table th {
+		background: #f8fafc;
+		font-weight: 600;
+		width: 35%;
+		color: #475569;
+	}
+
+	.rent-highlight {
+		color: var(--accent);
+		font-weight: bold;
+		font-size: 1.2em;
+	}
+
+	.features-list {
+		list-style: none;
+		padding: 0;
+	}
+
+	.features-list li {
+		padding: 0.75em 0;
+		padding-left: 1.5em;
+		position: relative;
+		border-bottom: 1px solid #e2e8f0;
+	}
+
+	.features-list li:before {
+		content: "✓";
+		position: absolute;
+		left: 0;
+		color: #10b981;
+		font-weight: bold;
+	}
+
+	.features-list li:last-child {
+		border-bottom: none;
+	}
+
+	.inquiry-section {
+		background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+		padding: 1.5em;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	.inquiry-text {
+		margin-bottom: 1em;
+		color: #475569;
+		font-weight: 500;
+	}
+
+	.inquiry-button {
+		display: inline-block;
+		background: var(--accent);
+		color: white;
+		padding: 0.75em 2em;
+		border-radius: 6px;
+		text-decoration: none;
+		font-weight: bold;
+		transition: background 0.3s, transform 0.2s;
+	}
+
+	.inquiry-button:hover {
+		background: var(--accent-dark);
+		transform: translateY(-2px);
+	}
+
+	.properties-notice {
+		max-width: 1200px;
+		margin: 3em auto;
+		padding: 2em;
+		background: #fef3c7;
+		border-left: 4px solid #f59e0b;
+		border-radius: 8px;
+	}
+
+	.properties-notice h2 {
+		color: #92400e;
+		margin-top: 0;
+	}
+
+	.properties-notice ul {
+		color: #78350f;
+	}
+
+	.properties-notice li {
+		margin-bottom: 0.5em;
+	}
+
+	@media (max-width: 768px) {
+		.property-content {
+			grid-template-columns: 1fr;
+			gap: 1.5em;
+			padding: 1em;
+		}
+
+		.property-header {
+			padding: 1em;
+			align-items: center;
+		}
+
+		.property-header h2 {
+			font-size: 1.3em;
+		}
+
+		.status-badge {
+			padding: 0.4em 1em;
+			font-size: 0.8em;
+		}
+
+		.properties-list {
+			padding: 0 1em;
+		}
+
+		.thumbnail {
+			flex: 0 0 60px;
+			height: 45px;
+		}
+
+		.slider-nav {
+			width: 32px;
+			height: 32px;
+			flex-shrink: 0;
+			background: var(--accent);
+			color: white;
+			border-color: var(--accent);
+		}
+
+		.thumbnail-slider {
+			gap: 0.5em;
+			display: flex;
+			align-items: center;
+		}
+
+		.thumbnail-track {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.expand-btn {
+			width: 36px;
+			height: 36px;
+		}
+
+		.lightbox-image {
+			max-width: 95%;
+			max-height: 80vh;
+		}
+
+		.lightbox-close,
+		.lightbox-nav {
+			width: 44px;
+			height: 44px;
+		}
+
+		.lightbox-close {
+			top: 10px;
+			right: 10px;
+		}
+
+		.lightbox-nav.prev {
+			left: 10px;
+		}
+
+		.lightbox-nav.next {
+			right: 10px;
+		}
+
+		.info-table th,
+		.info-table td {
+			display: block;
+			width: 100%;
+			padding: 0.5em;
+		}
+
+		.info-table th {
+			padding-bottom: 0.25em;
+			border-bottom: none;
+			font-size: 0.9em;
+		}
+
+		.info-table td {
+			padding-top: 0.25em;
+			padding-bottom: 0.75em;
+		}
+	}
+</style>

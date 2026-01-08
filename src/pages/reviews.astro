@@ -1,0 +1,128 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`お客様の声 - ${SITE_TITLE}`} description="カインドブリッジ合同会社のお客様からいただいた評価とレビュー" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="reviews-hero">
+				<h1>お客様の声</h1>
+				<p>これまでにご依頼いただいたお客様から、多くの高評価をいただいております。</p>
+			</section>
+
+			<section class="ratings-summary">
+				<div class="overall-rating">
+					<div class="rating-number">5.0</div>
+					<div class="stars">★★★★★</div>
+					<p class="rating-count">総合評価（2件の評価）</p>
+					<a href="https://crowdworks.jp/public/employees/4822/feedbacks" target="_blank" rel="noopener noreferrer" class="crowdworks-link">
+						CrowdWorksでの評価を見る →
+					</a>
+				</div>
+
+				<div class="rating-details">
+					<div class="rating-item">
+						<span class="rating-label">スキル</span>
+						<span class="rating-stars">★★★★★</span>
+						<span class="rating-value">5.0</span>
+					</div>
+					<div class="rating-item">
+						<span class="rating-label">クオリティ</span>
+						<span class="rating-stars">★★★★★</span>
+						<span class="rating-value">5.0</span>
+					</div>
+					<div class="rating-item">
+						<span class="rating-label">スケジュール</span>
+						<span class="rating-stars">★★★★★</span>
+						<span class="rating-value">5.0</span>
+					</div>
+					<div class="rating-item">
+						<span class="rating-label">コミュニケーション</span>
+						<span class="rating-stars">★★★★★</span>
+						<span class="rating-value">5.0</span>
+					</div>
+					<div class="rating-item">
+						<span class="rating-label">パートナーシップ</span>
+						<span class="rating-stars">★★★★★</span>
+						<span class="rating-value">5.0</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="reviews-list">
+				<h2>お客様からのレビュー</h2>
+
+				<div class="review-card">
+					<div class="review-header">
+						<div class="review-stars">★★★★★</div>
+						<div class="review-rating">5.0</div>
+					</div>
+					<div class="review-categories">
+						<span>スキル: 5</span>
+						<span>クオリティ: 5</span>
+						<span>スケジュール: 5</span>
+						<span>コミュニケーション: 5</span>
+						<span>パートナーシップ: 5</span>
+					</div>
+					<p class="review-text">すばやい対応ありがとうございました！</p>
+					<div class="review-meta">
+						<span class="review-project">Amazonの注文履歴よりダウンロードできる【支払明細書】を月毎に一括でダウンロードできるツール開発</span>
+						<span class="review-date">2025年03月03日</span>
+					</div>
+				</div>
+
+				<div class="review-card">
+					<div class="review-header">
+						<div class="review-stars">★★★★★</div>
+						<div class="review-rating">5.0</div>
+					</div>
+					<div class="review-categories">
+						<span>スキル: 5</span>
+						<span>クオリティ: 5</span>
+						<span>スケジュール: 5</span>
+						<span>コミュニケーション: 5</span>
+						<span>パートナーシップ: 5</span>
+					</div>
+					<p class="review-text">ありがとうございました！</p>
+					<div class="review-meta">
+						<span class="review-project">その他（システム開発）の仕事</span>
+						<span class="review-date">2025年03月19日</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="stats-section">
+				<h2>実績データ</h2>
+				<div class="stats-grid">
+					<div class="stat-item">
+						<div class="stat-number">826回</div>
+						<div class="stat-label">問答回数</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">6人</div>
+						<div class="stat-label">気になる！リスト</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">5.0</div>
+						<div class="stat-label">総合評価</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<h2>プロジェクトのご依頼はこちら</h2>
+				<p>システム開発のご相談、お見積もりは無料です。お気軽にお問い合わせください。</p>
+				<a href="/contact" class="cta-button">お問い合わせ</a>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

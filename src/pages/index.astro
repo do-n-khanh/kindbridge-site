@@ -6,44 +6,87 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
+		<section class="hero">
+			<h1>カインドブリッジ合同会社</h1>
+			<p class="tagline">システム開発と不動産賃貸で、新しい価値を創造します</p>
+		</section>
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="intro">
+				<h2>私たちについて</h2>
+				<p>
+					カインドブリッジ合同会社は、最先端のシステム開発サービスと、
+					質の高い不動産賃貸事業を展開する総合企業です。
+					お客様のニーズに寄り添い、最適なソリューションを提供いたします。
+				</p>
+			</section>
+
+			<section class="services-preview">
+				<h2>事業内容</h2>
+				<div class="service-cards">
+					<div class="service-card">
+						<h3>システム開発</h3>
+						<p>
+							最新技術を活用したWebアプリケーション開発、
+							モバイルアプリ開発、システムコンサルティングを提供します。
+						</p>
+						<a href="/services" class="btn">詳しく見る</a>
+					</div>
+					<div class="service-card">
+						<h3>不動産賃貸</h3>
+						<p>
+							自社所有物件の賃貸サービスを通じて、
+							快適で安心できる住空間をご提供いたします。
+						</p>
+						<a href="/services" class="btn">詳しく見る</a>
+					</div>
+				</div>
+			</section>
+
+		<section class="testimonials">
+			<h2>お客様の声</h2>
+			<div class="testimonial-highlight">
+				<div class="rating-badge">
+					<div class="rating-score">5.0</div>
+					<div class="rating-stars">★★★★★</div>
+					<p>総合評価</p>
+				</div>
+				<div class="testimonial-content">
+					<div class="testimonial-card">
+						<div class="stars">★★★★★</div>
+						<p class="quote">「すばやい対応ありがとうございました！」</p>
+						<p class="project">Amazonツール開発プロジェクト</p>
+					</div>
+					<div class="testimonial-card">
+						<div class="stars">★★★★★</div>
+						<p class="quote">「ありがとうございました！」</p>
+						<p class="project">システム開発プロジェクト</p>
+					</div>
+				</div>
+			</div>
+			<div class="testimonial-stats">
+				<div class="stat">
+					<strong>826回</strong>
+					<span>問答回数</span>
+				</div>
+				<div class="stat">
+					<strong>全項目5.0</strong>
+					<span>スキル・品質・対応</span>
+				</div>
+			</div>
+			<a href="/reviews" class="view-all-reviews">すべてのレビューを見る →</a>
+		</section>
+
+		<section class="cta">
+			<h2>お問い合わせ</h2>
+			<p>システム開発や不動産に関するご相談は、お気軽にお問い合わせください。</p>
+			<a href="/contact" class="cta-button">お問い合わせはこちら</a>
+			</section>
 		</main>
 		<Footer />
 	</body>

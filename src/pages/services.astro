@@ -1,0 +1,81 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`事業内容 - ${SITE_TITLE}`} description="カインドブリッジ合同会社の事業内容をご紹介します。" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="page-content">
+				<h1>事業内容</h1>
+				
+				<section class="service-detail">
+					<h2>システム開発事業</h2>
+					<p>
+						最新のテクノロジーを駆使し、お客様のビジネス課題を解決する
+						システム開発サービスを提供しています。
+					</p>
+					
+					<h3>提供サービス</h3>
+					<ul>
+						<li><strong>Webアプリケーション開発</strong>
+							<p>業務効率化やデジタルトランスフォーメーションを実現するWebシステムの設計・開発</p>
+						</li>
+						<li><strong>モバイルアプリ開発</strong>
+							<p>iOS・Android向けのネイティブアプリケーション開発</p>
+						</li>
+						<li><strong>クラウドソリューション</strong>
+							<p>AWS、Azure、Google Cloudを活用したクラウドインフラ構築・運用</p>
+						</li>
+						<li><strong>システムコンサルティング</strong>
+							<p>業務分析から要件定義、システム選定まで幅広くサポート</p>
+						</li>
+					</ul>
+
+					<h3>開発実績</h3>
+					<p>
+						業務管理システム、ECサイト、予約管理システムなど、
+						多様な業界のお客様に最適なソリューションを提供してきました。
+					</p>
+				</section>
+
+				<section class="service-detail">
+					<h2>不動産賃貸事業</h2>
+					<p>
+						自社所有物件を中心に、質の高い賃貸サービスを提供しています。
+						お客様に快適で安心できる住空間をご提案いたします。
+					</p>
+					
+					<h3>サービス内容</h3>
+					<ul>
+						<li><strong>住居用物件の賃貸</strong>
+							<p>ファミリー向け一戸建て物件をご用意</p>
+						</li>
+						
+					</ul>
+
+					<h3>特徴</h3>
+					<ul>
+						<li>自社物件のため柔軟な対応が可能</li>
+						<li>定期的なメンテナンスによる良好な住環境</li>
+						<li>迅速な対応と丁寧なサポート</li>
+					</ul>
+				</section>
+
+				<section class="cta">
+					<h2>お問い合わせ</h2>
+					<p>各サービスに関する詳細やご相談は、お気軽にお問い合わせください。</p>
+					<a href="/contact" class="btn btn-primary">お問い合わせフォーム</a>
+				</section>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>

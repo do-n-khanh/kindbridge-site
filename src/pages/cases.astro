@@ -1,0 +1,115 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`実績 - ${SITE_TITLE}`} description="カインドブリッジ合同会社のこれまでの実績をご紹介します。" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="page-content">
+				<h1>実績</h1>
+				
+				<section class="cases-intro">
+					<p>
+						これまでに手掛けたプロジェクトの一部をご紹介いたします。
+						お客様のニーズに応じた最適なソリューションを提供してまいりました。
+					</p>
+				</section>
+
+				<section class="case-category">
+					<h2>システム開発実績</h2>
+					
+					<div class="youtube-section">
+						<h3>🎥 開発実績動画</h3>
+						<p>
+							開発したシステムやツールの動画をYouTubeチャンネルで公開しています。<br>
+							実際の操作画面や機能をご覧いただけます。
+						</p>
+						<a href="https://www.youtube.com/@kindbridgejp" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+							YouTubeチャンネルを見る
+						</a>
+					</div>
+					
+					<div class="case-item">
+						<h3>製造業向け業務管理システム</h3>
+						<div class="case-meta">
+							<span class="case-year">2025年</span>
+							<span class="case-type">Webアプリケーション</span>
+						</div>
+						<p>
+							生産管理から在庫管理、出荷管理まで一元管理できるシステムを開発。
+							業務効率が30%向上し、ペーパーレス化も実現しました。
+						</p>
+						<ul class="case-tech">
+							<li>技術: React, Node.js, PostgreSQL</li>
+							<li>期間: 6ヶ月</li>
+						</ul>
+					</div>
+
+					<div class="case-item">
+						<h3>飲食店予約管理システム</h3>
+						<div class="case-meta">
+							<span class="case-year">2024年</span>
+							<span class="case-type">Webアプリケーション</span>
+						</div>
+						<p>
+							複数店舗の予約を一元管理し、顧客情報の統合管理も可能に。
+							予約の取りこぼしを削減し、売上向上に貢献しました。
+						</p>
+						<ul class="case-tech">
+							<li>技術: Vue.js, Python, MySQL</li>
+							<li>期間: 4ヶ月</li>
+						</ul>
+					</div>
+
+					<div class="case-item">
+						<h3>ECサイト構築</h3>
+						<div class="case-meta">
+							<span class="case-year">2024年</span>
+							<span class="case-type">Webアプリケーション</span>
+						</div>
+						<p>
+							決済システムとの連携、在庫管理機能を備えた総合ECサイトを構築。
+							モバイルファーストのデザインで高いコンバージョン率を実現。
+						</p>
+						<ul class="case-tech">
+							<li>技術: Next.js, Stripe, AWS</li>
+							<li>期間: 5ヶ月</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="case-category">
+					<h2>不動産賃貸実績</h2>
+					
+					<div class="case-item">
+						<h3>ファミリー向け一戸建て</h3>
+						<div class="case-meta">
+							<span class="case-year">所有物件数: 4棟</span>
+						</div>
+						<p>
+							都心部および近郊エリアにおいて、ファミリー層向けの
+							質の高い住環境を提供しています。
+						</p>
+					</div>
+
+					
+				</section>
+
+				<section class="cta">
+					<h2>ご相談ください</h2>
+					<p>あなたのプロジェクトについて、お気軽にご相談ください。</p>
+					<a href="/contact" class="btn btn-primary">お問い合わせフォーム</a>
+				</section>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
