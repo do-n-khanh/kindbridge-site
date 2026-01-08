@@ -7,7 +7,7 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://kindbridge.com",
+	site: "https://kindbridge.jp",
 	integrations: [mdx(), sitemap()],
 	adapter: cloudflare({
 		platformProxy: {
