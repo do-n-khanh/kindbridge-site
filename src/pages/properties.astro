@@ -6,6 +6,9 @@ import { SITE_TITLE } from '../consts';
 import fs from 'fs';
 import path from 'path';
 
+const pageTitle = '物件情報 | ' + SITE_TITLE;
+const pageDescription = 'カインドブリッジ合同会社の賃貸物件一覧。東京都内の一戸建て物件をご紹介します。';
+
 // 自動的に各物件フォルダから写真を読み込む関数
 function getPropertyImages(propertyId: number): string[] {
 	const folderPath = path.join(process.cwd(), 'public', 'properties', `property-${propertyId}`);
